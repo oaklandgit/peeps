@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "swift-argument-parser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-argument-parser",
+      "state" : {
+        "revision" : "8f4d2753f0e4778c76d5f05ad16c74f707390531",
+        "version" : "1.2.3"
+      }
+    },
+    {
+      "identity" : "swiftycontacts",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwiftyContacts/SwiftyContacts.git",
+      "state" : {
+        "revision" : "6671f40607f5a8c65e40fed90517967003ec11de",
+        "version" : "4.0.2"
+      }
+    }
+  ],
+  "version" : 2
+}
