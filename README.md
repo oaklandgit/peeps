@@ -1,0 +1,5 @@
+### Example
+
+```
+$ peeps --input john
+```
