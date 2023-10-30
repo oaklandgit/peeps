@@ -6,11 +6,11 @@ struct Peeps: ParsableCommand {
     @Argument(help: "Search for person to peep.")
     public var input: String
 
-    @Flag(name: .shortAndLong, help: "Include phone numbers.")
-    public var phones: Bool = false
+    // @Flag(name: .shortAndLong, help: "Include phone numbers.")
+    // public var phones: Bool = false
 
-    @Flag(name: .shortAndLong, help: "Include email addresses.")
-    public var emails: Bool = false
+    // @Flag(name: .shortAndLong, help: "Include email addresses.")
+    // public var emails: Bool = false
 
     public func run() throws {
         let contacts = try fetchContacts(matchingName: self.input)
@@ -21,11 +21,11 @@ struct Peeps: ParsableCommand {
         }
 
         if contacts.count == 1 {
-            print("Found 1 contact.\n")
+            print("Found 1 peep.\n")
             printContactCard(item: contacts[0])
             return
         } else {
-            print("Found \(contacts.count) contacts.\n")
+            print("Found \(contacts.count) peeps.\n")
             
             for (index, contact) in contacts.enumerated() {
                 printItem(item: contact, index: index + 1)
@@ -38,7 +38,7 @@ struct Peeps: ParsableCommand {
                 print()
                 printContactCard(item: contacts[selection - 1])
             } else {
-                print("Invalid selection.")
+                print("No such peep.")
             }
             return
         }
@@ -47,12 +47,8 @@ struct Peeps: ParsableCommand {
 }
 
 func printItem(item: CNContact, index: Int) -> Void {
-
     let paddedIndex = String(index).padding(toLength: 2, withPad: " ", startingAt: 0)
-
-    print("""
-    \(paddedIndex) \(item.givenName) \(item.familyName)
-    """)
+    print("\(paddedIndex) \(item.givenName) \(item.familyName)")
 }
 
 func printContactCard(item: CNContact) -> Void {
