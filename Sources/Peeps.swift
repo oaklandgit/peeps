@@ -1,15 +1,6 @@
 import ArgumentParser
 import SwiftyContacts
 
-func getHumanReadableLabel(for label: String) -> String {
-    let labelDict: [String: String] = [
-        CNLabelPhoneNumberMain: "Main",
-        CNLabelPhoneNumberMobile: "Mobile",
-        CNLabelPhoneNumberiPhone: "iPhone",
-    ]
-    return labelDict[label] ?? "Other"
-}
-
 @main
 struct Peeps: ParsableCommand {
     @Argument(help: "Search for person to peep.")
@@ -23,26 +14,64 @@ struct Peeps: ParsableCommand {
 
     public func run() throws {
         let contacts = try fetchContacts(matchingName: self.input)
-        for (index, contact) in contacts.enumerated() {
-            
-            let fullName = "\(contact.givenName) \(contact.familyName)"
-            let dividerLine = String(repeating: "=", count: fullName.count)
-            print("\(index + 1). \(fullName)")
-            
-            if self.phones {
-                // print("==\(dividerLine)")
-                for phone in contact.phoneNumbers {
-                    if let label = phone.label {
-                        let humanReadableLabel = getHumanReadableLabel(for: label)
-                        print("\u{f095} \(humanReadableLabel): \(phone.value.stringValue)")
-                    }
-                }
-            }
-            // print("\n")
 
+        if contacts.count == 0 {
+            print("No contacts found.")
+            return
         }
-        
+
+        if contacts.count == 1 {
+            print("Found 1 contact.\n")
+            printContactCard(item: contacts[0])
+            return
+        } else {
+            print("Found \(contacts.count) contacts.\n")
+            
+            for (index, contact) in contacts.enumerated() {
+                printItem(item: contact, index: index + 1)
+            }
+            
+            print("\nWho to peep? (1-\(contacts.count)): ", terminator: "")
+            let selection = Int(readLine() ?? "0") ?? 0
+
+            if selection > 0 && selection <= contacts.count {
+                print()
+                printContactCard(item: contacts[selection - 1])
+            } else {
+                print("Invalid selection.")
+            }
+            return
+        }
 
     }
+}
+
+func printItem(item: CNContact, index: Int) -> Void {
+
+    let paddedIndex = String(index).padding(toLength: 2, withPad: " ", startingAt: 0)
+
+    print("""
+    \(paddedIndex) \(item.givenName) \(item.familyName)
+    """)
+}
+
+func printContactCard(item: CNContact) -> Void {
+    print("\(item.givenName) \(item.familyName)")
+
+        for phone in item.phoneNumbers {
+            if let label = phone.label {
+                let humanReadableLabel = getHumanReadableLabel(for: label)
+                print("- \(humanReadableLabel): \(phone.value.stringValue)")
+            }
+        }
+}
+
+func getHumanReadableLabel(for label: String) -> String {
+    let labelDict: [String: String] = [
+        CNLabelPhoneNumberMain: "Main",
+        CNLabelPhoneNumberMobile: "Mobile",
+        CNLabelPhoneNumberiPhone: "iPhone",
+    ]
+    return labelDict[label] ?? "Other"
 }
 
