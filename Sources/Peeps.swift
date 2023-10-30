@@ -1,6 +1,8 @@
 import ArgumentParser
 import SwiftyContacts
 
+let labelIndent = 6
+
 @main
 struct Peeps: ParsableCommand {
     @Argument(help: "Search for person to peep.")
@@ -53,13 +55,40 @@ func printItem(item: CNContact, index: Int) -> Void {
 
 func printContactCard(item: CNContact) -> Void {
     print("\(item.givenName) \(item.familyName)")
+    print("-------------")
+    printPhoneNumbers(phoneNumbers: item.phoneNumbers)
+    print()
+    printEmailAddresses(emailAddresses: item.emailAddresses)
+    print()
+    printPostalAddresses(postalAddresses: item.postalAddresses)
+}
 
-        for phone in item.phoneNumbers {
-            if let label = phone.label {
-                let humanReadableLabel = getHumanReadableLabel(for: label)
-                print("- \(humanReadableLabel): \(phone.value.stringValue)")
-            }
+func printPhoneNumbers(phoneNumbers: [CNLabeledValue<CNPhoneNumber>]) -> Void {
+    for phone in phoneNumbers {
+        if let label = phone.label {
+            let humanReadableLabel = getHumanReadableLabel(for: label)
+            print("\(humanReadableLabel) \(phone.value.stringValue)")
         }
+    }
+}
+
+func printEmailAddresses(emailAddresses: [CNLabeledValue<NSString>]) -> Void {
+    for email in emailAddresses {
+        if let label = email.label {
+            let humanReadableLabel = getHumanReadableLabel(for: label)
+            print("\(humanReadableLabel) \(email.value)")
+        }
+    }
+}
+
+func printPostalAddresses(postalAddresses: [CNLabeledValue<CNPostalAddress>]) -> Void {
+    for address in postalAddresses {
+        if let label = address.label {
+            let humanReadableLabel = getHumanReadableLabel(for: label)
+            print("\(humanReadableLabel) \(address.value.street) \(address.value.subLocality)")
+            print("       \(address.value.city) \(address.value.state) \(address.value.postalCode)")
+        }
+    }
 }
 
 func getHumanReadableLabel(for label: String) -> String {
@@ -67,7 +96,12 @@ func getHumanReadableLabel(for label: String) -> String {
         CNLabelPhoneNumberMain: "Main",
         CNLabelPhoneNumberMobile: "Mobile",
         CNLabelPhoneNumberiPhone: "iPhone",
+        CNLabelHome: "Home",
+        CNLabelWork: "Work",
+        CNLabelOther: "Other",
     ]
-    return labelDict[label] ?? "Other"
+
+    let paddedLabel = (labelDict[label] ?? "Other").padding(toLength: labelIndent, withPad: " ", startingAt: 0)
+    return paddedLabel
 }
 
