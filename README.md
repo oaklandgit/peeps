@@ -23,7 +23,7 @@ sudo cp -f .build/release/Peeps /usr/local/bin/peeps
 
 ### Use
 
-Fetch all your contacts with "jen" in the name, and show all their phone numbers.
+Fetch all your contacts matching "jen":
 
 ```
 $ peeps jen
