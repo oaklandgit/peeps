@@ -16,20 +16,21 @@ struct Peeps: ParsableCommand {
     public var input: String
 
     @Flag(name: .shortAndLong, help: "Include phone numbers.")
-    public var phoneNumbers: Bool = false
+    public var phones: Bool = false
 
     @Flag(name: .shortAndLong, help: "Include email addresses.")
-    public var emailAddresses: Bool = false
+    public var emails: Bool = false
 
     public func run() throws {
         let contacts = try fetchContacts(matchingName: self.input)
-        for contact in contacts {
+        for (index, contact) in contacts.enumerated() {
             
             let fullName = "\(contact.givenName) \(contact.familyName)"
             let dividerLine = String(repeating: "=", count: fullName.count)
-            print("\u{f4ff} \(fullName)")
-            print("==\(dividerLine)")
-            if self.phoneNumbers {
+            print("\(index + 1). \(fullName)")
+            
+            if self.phones {
+                // print("==\(dividerLine)")
                 for phone in contact.phoneNumbers {
                     if let label = phone.label {
                         let humanReadableLabel = getHumanReadableLabel(for: label)
@@ -37,7 +38,7 @@ struct Peeps: ParsableCommand {
                     }
                 }
             }
-            print("\n")
+            // print("\n")
 
         }
         
