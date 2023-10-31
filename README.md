@@ -35,8 +35,14 @@ If only one match is found, peeps will display it:
 Found 1 peep.
 
 Jenny Schneider
-- iPhone: (555) 867-5309
-- Other: (555) 606-0842
+---------------
+iPhone  (555) 867-5309
+Other   (555) 606-0842
+
+Work    jenny8675309@gmail.com
+
+Home    1234 Main St
+        Anytown, CA 12345
 ```
 
 If multiple matches are found, peeps will display a list of matches for you to choose.
