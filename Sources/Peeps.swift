@@ -2,17 +2,12 @@ import ArgumentParser
 import SwiftyContacts
 
 let labelIndent = 6
+let indentSpaces = String(repeating: " ", count: labelIndent)
 
 @main
 struct Peeps: ParsableCommand {
     @Argument(help: "Search for person to peep.")
     public var input: String
-
-    // @Flag(name: .shortAndLong, help: "Include phone numbers.")
-    // public var phones: Bool = false
-
-    // @Flag(name: .shortAndLong, help: "Include email addresses.")
-    // public var emails: Bool = false
 
     public func run() throws {
         let contacts = try fetchContacts(matchingName: self.input)
@@ -55,7 +50,7 @@ func printItem(item: CNContact, index: Int) -> Void {
 
 func printContactCard(item: CNContact) -> Void {
     print("\(item.givenName) \(item.familyName)")
-    print("-------------")
+    print(String(repeating: "-", count: item.givenName.count + item.familyName.count + 1))
     printPhoneNumbers(phoneNumbers: item.phoneNumbers)
     print()
     printEmailAddresses(emailAddresses: item.emailAddresses)
@@ -86,7 +81,7 @@ func printPostalAddresses(postalAddresses: [CNLabeledValue<CNPostalAddress>]) ->
         if let label = address.label {
             let humanReadableLabel = getHumanReadableLabel(for: label)
             print("\(humanReadableLabel) \(address.value.street) \(address.value.subLocality)")
-            print("       \(address.value.city) \(address.value.state) \(address.value.postalCode)")
+            print("\(indentSpaces) \(address.value.city) \(address.value.state) \(address.value.postalCode)")
         }
     }
 }
