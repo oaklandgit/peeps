@@ -1,5 +1,3 @@
-Enjoy quick access to your contacts (aka "peeps") from your command line.
-
 ### Requires
 
 MacOS
