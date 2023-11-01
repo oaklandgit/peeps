@@ -1,5 +1,4 @@
-Currently just outputs a list of matching people from your MacOS contacts.
-Eventually will be a CLI for managing contacts.
+Enjoy quick access to your contacts (aka "peeps") from your command line.
 
 ### Requires
 
